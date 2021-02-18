@@ -14,7 +14,7 @@ export interface Character {
   height: number;
   mass: number;
   skinColor: string;
-  homeworld: Planet;
+  homeWorld: Planet;
   species: Species[];
   filmConnection: Film[];
   starshipConnection: Starship[];

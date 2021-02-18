@@ -13,7 +13,7 @@ export interface Species {
   hairColors: string[];
   skinColors: string[];
   language: string;
-  homeworld: Planet;
+  homeWorld: Planet;
   personConnection: Character[];
   filmConnection: Film[];
 }
