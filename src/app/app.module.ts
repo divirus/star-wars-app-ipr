@@ -11,6 +11,7 @@ import {PersonComponent} from './components/person/person.component';
 import {SpeciesComponent} from './components/species/species.component';
 import {VehicleComponent} from './components/vehicle/vehicle.component';
 import {FilmComponent} from './components/film/film.component';
+import { DetailModalComponent } from './shared/components/detail-modal/detail-modal.component';
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
@@ -35,6 +36,7 @@ const appRoutes: Routes = [
     SpeciesComponent,
     VehicleComponent,
     FilmComponent,
+    DetailModalComponent,
   ],
   imports: [
     BrowserModule,
