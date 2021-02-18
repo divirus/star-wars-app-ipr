@@ -1,19 +1,17 @@
-import {Character} from './character.model';
 import {Film} from './film.model';
+import {Character} from './character.model';
 
-export interface Starship {
+export interface Vehicle {
   id: string;
   name: string;
   model: string;
-  starshipClass: string;
+  vehicleClass: string;
   manufacturers: string[];
   costInCredits: number;
   length: number;
   crew: string;
   passengers: string;
   maxAtmospheringSpeed: number;
-  hyperdriveRating: number;
-  MGLT: number;
   cargoCapacity: number;
   consumables: string;
   pilotConnection: Character[];

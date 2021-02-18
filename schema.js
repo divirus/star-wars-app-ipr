@@ -15,14 +15,14 @@ import {
     GraphQLNonNull,
     GraphQLString
   } from 'graphql';
-  
+
   import { makeExecutableSchema } from 'graphql-tools';
-  
+
   import { PubSub, SubscriptionManager, withFilter } from 'graphql-subscriptions';
-  
+
   const pubsub = new PubSub();
   const ADDED_REVIEW_TOPIC = 'new_review';
-  
+
   const schemaString = `
   schema {
     query: Query
@@ -171,7 +171,7 @@ import {
   }
   union SearchResult = Human | Droid | Starship
   `;
-  
+
   /**
    * This defines a basic set of data for our Star Wars Schema.
    *
@@ -179,7 +179,7 @@ import {
    * fetching this data from a backend service rather than from hardcoded
    * JSON objects in a more complex demo.
    */
-  
+
   const humans = [
     {
       id: '1000',
@@ -230,34 +230,24 @@ import {
       starships: [],
     },
   ];
-  
-  const humanData = {};
-  humans.forEach((ship) => {
-    humanData[ship.id] = ship;
-  });
-  
+
   const droids = [
-    {
-      id: '2000',
-      name: 'C-3PO',
-      friends: [ '1000', '1002', '1003', '2001' ],
-      appearsIn: [ 'NEWHOPE', 'EMPIRE', 'JEDI' ],
-      primaryFunction: 'Protocol',
-    },
-    {
-      id: '2001',
-      name: 'R2-D2',
-      friends: [ '1000', '1002', '1003' ],
-      appearsIn: [ 'NEWHOPE', 'EMPIRE', 'JEDI' ],
-      primaryFunction: 'Astromech',
-    },
-  ];
-  
-  const droidData = {};
-  droids.forEach((ship) => {
-    droidData[ship.id] = ship;
-  });
-  
+  {
+    id: '2000',
+    name: 'C-3PO',
+    friends: [ '1000', '1002', '1003', '2001' ],
+    appearsIn: [ 'NEWHOPE', 'EMPIRE', 'JEDI' ],
+    primaryFunction: 'Protocol',
+  },
+  {
+    id: '2001',
+    name: 'R2-D2',
+    friends: [ '1000', '1002', '1003' ],
+    appearsIn: [ 'NEWHOPE', 'EMPIRE', 'JEDI' ],
+    primaryFunction: 'Astromech',
+  },
+];
+
   const starships = [
     {
       id: '3000',
@@ -280,19 +270,29 @@ import {
       length: 20,
     },
   ];
-  
-  const starshipData = {};
-  starships.forEach((ship) => {
-    starshipData[ship.id] = ship;
-  });
-  
+
   var reviews = {
     'NEWHOPE': [],
     'EMPIRE': [],
     'JEDI': []
   };
-  
-  
+
+  const humanData = {};
+  humans.forEach((ship) => {
+    humanData[ship.id] = ship;
+  });
+
+  const droidData = {};
+  droids.forEach((ship) => {
+    droidData[ship.id] = ship;
+  });
+
+  const starshipData = {};
+  starships.forEach((ship) => {
+    starshipData[ship.id] = ship;
+  });
+
+
   /**
    * Helper function to get a character by ID.
    */
@@ -300,14 +300,14 @@ import {
     // Returning a promise just to illustrate GraphQL.js's support.
     return Promise.resolve(humanData[id] || droidData[id]);
   }
-  
+
   /**
    * Allows us to query for a character's friends.
    */
   function getFriends(character) {
     return character.friends.map(id => getCharacter(id));
   }
-  
+
   /**
    * Allows us to fetch the undisputed hero of the Star Wars trilogy, R2-D2.
    */
@@ -319,40 +319,40 @@ import {
     // Artoo is the hero otherwise.
     return droidData['2001'];
   }
-  
+
   /**
    * Allows us to fetch the ephemeral reviews for each episode
    */
   function getReviews(episode) {
     return reviews[episode];
   }
-  
+
   /**
    * Allows us to query for the human with the given id.
    */
   function getHuman(id) {
     return humanData[id];
   }
-  
+
   /**
    * Allows us to query for the droid with the given id.
    */
   function getDroid(id) {
     return droidData[id];
   }
-  
+
   function getStarship(id) {
     return starshipData[id];
   }
-  
+
   function toCursor(str) {
     return Buffer("cursor" + str).toString('base64');
   }
-  
+
   function fromCursor(str) {
     return Buffer.from(str, 'base64').toString().slice(6);
   }
-  
+
   const resolvers = {
     Query: {
       hero: (root, { episode }) => getHero(episode),
@@ -363,13 +363,13 @@ import {
       reviews: (root, { episode }) => getReviews(episode),
       search: (root, { text }) => {
         const re = new RegExp(text, 'i');
-  
+
         const allData = [
           ...humans,
           ...droids,
           ...starships,
         ];
-  
+
         return allData.filter((obj) => re.test(obj.name));
       },
     },
@@ -386,7 +386,7 @@ import {
           subscribe: withFilter(
               () => pubsub.asyncIterator(ADDED_REVIEW_TOPIC),
               (payload, variables) => {
-                  return (payload !== undefined) && 
+                  return (payload !== undefined) &&
                   ((variables.episode === null) || (payload.reviewAdded.episode === variables.episode));
               }
           ),
@@ -408,7 +408,7 @@ import {
         if (unit === 'FOOT') {
           return height * 3.28084;
         }
-  
+
         return height;
       },
       friends: ({ friends }) => friends.map(getCharacter),
@@ -472,7 +472,7 @@ import {
         if (unit === 'FOOT') {
           return length * 3.28084;
         }
-  
+
         return length;
       },
       coordinates: () => {
@@ -494,7 +494,7 @@ import {
       },
     },
   }
-  
+
   /**
    * Finally, we construct our schema (whose starting query type is the query
    * type we defined above) and export it.
