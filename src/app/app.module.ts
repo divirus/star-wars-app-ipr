@@ -10,13 +10,17 @@ import {StarshipComponent} from './components/starship/starship.component';
 import {PlanetComponent} from './components/planet/planet.component';
 import {HeaderComponent} from './shared/components/header/header.component';
 import {PersonComponent} from './components/person/person.component';
+import {SpeciesComponent} from './components/species/species.component';
+import {VehicleComponent} from './components/vehicle/vehicle.component';
 
 const appRoutes: Routes = [
-  { path: '', component: HomeComponent},
-  { path: 'person', component: PersonComponent },
-  { path: 'starship', component: StarshipComponent },
-  { path: 'planet', component: PlanetComponent },
-  { path: '**', component: NotFoundComponent },
+  {path: '', component: HomeComponent},
+  {path: 'persons', component: PersonComponent},
+  {path: 'starships', component: StarshipComponent},
+  {path: 'vehicles', component: VehicleComponent},
+  {path: 'planets', component: PlanetComponent},
+  {path: 'species', component: SpeciesComponent},
+  {path: '**', component: NotFoundComponent},
 ];
 
 @NgModule({
@@ -28,6 +32,8 @@ const appRoutes: Routes = [
     PersonComponent,
     StarshipComponent,
     PlanetComponent,
+    SpeciesComponent,
+    VehicleComponent,
   ],
   imports: [
     BrowserModule,
