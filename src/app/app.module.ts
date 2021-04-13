@@ -11,7 +11,10 @@ import {PersonComponent} from './components/person/person.component';
 import {SpeciesComponent} from './components/species/species.component';
 import {VehicleComponent} from './components/vehicle/vehicle.component';
 import {FilmComponent} from './components/film/film.component';
-import { DetailModalComponent } from './shared/components/detail-modal/detail-modal.component';
+import {DetailModalComponent} from './shared/components/detail-modal/detail-modal.component';
+import {GraphQLModule} from './graphql.module';
+import {AgGridModule} from 'ag-grid-angular';
+import {ReactiveFormsModule} from '@angular/forms';
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
@@ -40,7 +43,10 @@ const appRoutes: Routes = [
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(appRoutes)
+    GraphQLModule,
+    RouterModule.forRoot(appRoutes),
+    AgGridModule.withComponents([]),
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

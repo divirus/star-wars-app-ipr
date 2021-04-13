@@ -1,1 +1,15 @@
-<p>detail-modal works!</p>
+<div class="detail-modal__header">
+  <div class="detail-modal__header-title">Заголовок</div>
+  <div class="detail-modal__header-content">
+    <button class="detail-modal__header-content close-button" (click)="onClose()">x</button>
+  </div>
+</div>
+<div class="detail-modal__content">
+    <ng-container *ngFor="let data of modalData | keyvalue">
+      <div class="form-item">
+        <label>{{ data.key }}</label>
+        <input class="form-item__input" [formControl]="formGroup.get(data.key)" />
+      </div>
+    </ng-container>
+</div>
+
