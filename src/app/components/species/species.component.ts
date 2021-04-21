@@ -8,7 +8,11 @@ import {MainService} from '../../core/services/main.service';
   styleUrls: ['./species.component.scss']
 })
 export class SpeciesComponent implements OnInit {
-  detailModalVisible = false
+  private gridApi: any;
+  private gridColumnApi: any;
+
+  perPageLimit = 10;
+  detailModalVisible = false;
   species: Species[] = [];
   selectedSpecies: Species | undefined;
   speciesColumns = [
@@ -36,6 +40,11 @@ export class SpeciesComponent implements OnInit {
     });
   }
 
+  onGridReady(params: any): void {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+  }
+
   onSelectionChanged(row: any): void {
     this.selectedSpecies = row.data;
     this.openModal();
@@ -47,5 +56,10 @@ export class SpeciesComponent implements OnInit {
 
   closeModal(): void {
     this.detailModalVisible = false;
+  }
+
+  changePerPageLimit(event: any): void {
+    this.perPageLimit = event.target.valueAsNumber;
+    this.gridApi.paginationSetPageSize(this.perPageLimit);
   }
 }

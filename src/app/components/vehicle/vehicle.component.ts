@@ -8,6 +8,10 @@ import {MainService} from '../../core/services/main.service';
   styleUrls: ['./vehicle.component.scss']
 })
 export class VehicleComponent implements OnInit {
+  private gridApi: any;
+  private gridColumnApi: any;
+
+  perPageLimit = 10;
   detailModalVisible = false;
   vehicles: Vehicle[] = [];
   selectedVehicle: Vehicle | undefined;
@@ -38,6 +42,11 @@ export class VehicleComponent implements OnInit {
     });
   }
 
+  onGridReady(params: any): void {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+  }
+
   onSelectionChanged(row: any): void {
     this.selectedVehicle = row.data;
     this.openModal();
@@ -49,5 +58,10 @@ export class VehicleComponent implements OnInit {
 
   closeModal(): void {
     this.detailModalVisible = false;
+  }
+
+  changePerPageLimit(event: any): void {
+    this.perPageLimit = event.target.valueAsNumber;
+    this.gridApi.paginationSetPageSize(this.perPageLimit);
   }
 }

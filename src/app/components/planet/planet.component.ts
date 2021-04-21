@@ -8,7 +8,11 @@ import {MainService} from '../../core/services/main.service';
   styleUrls: ['./planet.component.scss']
 })
 export class PlanetComponent implements OnInit {
-  detailModalVisible = false
+  private gridApi: any;
+  private gridColumnApi: any;
+
+  perPageLimit = 10;
+  detailModalVisible = false;
   planets: Planet[] = [];
   selectedPlanet: Planet | undefined;
   planetsColumns = [
@@ -35,6 +39,11 @@ export class PlanetComponent implements OnInit {
     });
   }
 
+  onGridReady(params: any): void {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+  }
+
   onSelectionChanged(row: any): void {
     this.selectedPlanet = row.data;
     this.openModal();
@@ -46,5 +55,10 @@ export class PlanetComponent implements OnInit {
 
   closeModal(): void {
     this.detailModalVisible = false;
+  }
+
+  changePerPageLimit(event: any): void {
+    this.perPageLimit = event.target.valueAsNumber;
+    this.gridApi.paginationSetPageSize(this.perPageLimit);
   }
 }

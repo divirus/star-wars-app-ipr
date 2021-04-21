@@ -1,2 +1,21 @@
 @import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
 @import "../node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css";
+
+* {
+  font-family: "Segoe UI", Arial;
+}
+
+.per-page-input_container {
+  position: absolute;
+  bottom: 303px;
+  right: 340px;
+
+  label {
+    font-size: 14px;
+    margin-right: 4px;
+  }
+
+  input {
+    width: 60px;
+  }
+}

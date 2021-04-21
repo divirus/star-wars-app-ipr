@@ -1,6 +1,6 @@
 <header class="header">
   <div class="title-container">
-    <h1 class="title">Фильмы</h1>
+    <h2 class="title">Фильмы</h2>
   </div>
 </header>
 <main>
@@ -10,9 +10,16 @@
     [animateRows]="true"
     [rowData]="movies"
     [columnDefs]="moviesColumns"
+    [pagination]="true"
+    [paginationPageSize]="perPageLimit"
     (cellClicked)="onSelectionChanged($event)"
+    (gridReady)="onGridReady($event)"
   >
   </ag-grid-angular>
+  <div class="per-page-input_container">
+    <label>Кол-во строк на странице</label>
+    <input type="number" class="per-page-input" value="{{ perPageLimit }}" (change)="changePerPageLimit($event)" />
+  </div>
 
   <app-detail-modal
     *ngIf="detailModalVisible"
