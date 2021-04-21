@@ -15,6 +15,7 @@ import {DetailModalComponent} from './shared/components/detail-modal/detail-moda
 import {GraphQLModule} from './graphql.module';
 import {AgGridModule} from 'ag-grid-angular';
 import {ReactiveFormsModule} from '@angular/forms';
+import {DreamTeamComponent} from './components/dream-team/dream-team.component';
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
@@ -40,6 +41,7 @@ const appRoutes: Routes = [
     VehicleComponent,
     FilmComponent,
     DetailModalComponent,
+    DreamTeamComponent,
   ],
   imports: [
     BrowserModule,
