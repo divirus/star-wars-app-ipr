@@ -4,7 +4,7 @@ import {Starship} from './starship.model';
 import {Character} from './character.model';
 import {Planet} from './planet.model';
 
-export interface Film {
+export interface Movie {
   id: string;
   title: string;
   episodeID: number;

@@ -3,11 +3,11 @@ import {Vehicle} from 'src/app/models/vehicle.model';
 import {MainService} from '../../core/services/main.service';
 
 @Component({
-  selector: 'app-vehicle',
-  templateUrl: './vehicle.component.html',
-  styleUrls: ['./vehicle.component.scss']
+  selector: 'app-vehicles',
+  templateUrl: './vehicles.component.html',
+  styleUrls: ['./vehicles.component.scss']
 })
-export class VehicleComponent implements OnInit {
+export class VehiclesComponent implements OnInit {
   private gridApi: any;
   private gridColumnApi: any;
 

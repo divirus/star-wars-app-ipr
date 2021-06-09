@@ -3,11 +3,11 @@ import { Planet } from 'src/app/models/planet.model';
 import {MainService} from '../../core/services/main.service';
 
 @Component({
-  selector: 'app-planet',
-  templateUrl: './planet.component.html',
-  styleUrls: ['./planet.component.scss']
+  selector: 'app-planets',
+  templateUrl: './planets.component.html',
+  styleUrls: ['./planets.component.scss']
 })
-export class PlanetComponent implements OnInit {
+export class PlanetsComponent implements OnInit {
   private gridApi: any;
   private gridColumnApi: any;
 

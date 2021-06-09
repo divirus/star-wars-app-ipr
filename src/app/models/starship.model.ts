@@ -1,5 +1,5 @@
 import {Character} from './character.model';
-import {Film} from './film.model';
+import {Movie} from './movie.model';
 
 export interface Starship {
   id: string;
@@ -17,5 +17,5 @@ export interface Starship {
   cargoCapacity: number;
   consumables: string;
   pilotConnection: Character[];
-  filmConnection: Film[];
+  filmConnection: Movie[];
 }

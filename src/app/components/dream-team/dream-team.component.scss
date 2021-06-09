@@ -1,0 +1,42 @@
+input {
+  margin: 4px 4px 0 0;
+}
+
+.dream-team-container_header {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 6px 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+
+  .rows {
+    display: flex;
+    flex-direction: column;
+
+    &.first-row {
+      flex-direction: row;
+      width: 50%;
+      overflow: hidden;
+      display: inline-block;
+      margin-bottom: 20px;
+      text-align: left;
+
+      .form-item {
+        display: inline-block;
+        width: 20%;
+        padding: 10px;
+        text-align: left;
+      }
+    }
+
+    .form-item {
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      width: 300px;
+    }
+  }
+}

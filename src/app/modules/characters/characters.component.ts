@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Character } from 'src/app/models/character.model';
-import {MainService} from '../../core/services/main.service';
+import { MainService } from '../../core/services/main.service';
 
 @Component({
-  selector: 'app-person',
-  templateUrl: './person.component.html',
-  styleUrls: ['./person.component.scss']
+  selector: 'app-characters',
+  templateUrl: './characters.component.html',
+  styleUrls: ['./characters.component.scss']
 })
-export class PersonComponent implements OnInit {
+export class CharactersComponent implements OnInit {
   private gridApi: any;
   private gridColumnApi: any;
 

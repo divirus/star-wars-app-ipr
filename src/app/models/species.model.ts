@@ -1,6 +1,6 @@
 import {Planet} from './planet.model';
 import {Character} from './character.model';
-import {Film} from './film.model';
+import {Movie} from './movie.model';
 
 export interface Species {
   id: string;
@@ -15,7 +15,7 @@ export interface Species {
   language: string;
   homeWorld: Planet;
   personConnection: Character[];
-  filmConnection: Film[];
+  filmConnection: Movie[];
 }
 
 

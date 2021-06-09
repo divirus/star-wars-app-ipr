@@ -1,5 +1,5 @@
 import {Character} from './character.model';
-import {Film} from './film.model';
+import {Movie} from './movie.model';
 
 export interface Planet {
   id: string;
@@ -12,5 +12,5 @@ export interface Planet {
   climates: string[];
   surfaceWater: number;
   residentConnection: Character[];
-  filmConnection: Film[];
+  filmConnection: Movie[];
 }

@@ -1,4 +1,4 @@
-import {Film} from './film.model';
+import {Movie} from './movie.model';
 import {Character} from './character.model';
 
 export interface Vehicle {
@@ -15,5 +15,5 @@ export interface Vehicle {
   cargoCapacity: number;
   consumables: string;
   pilotConnection: Character[];
-  filmConnection: Film[];
+  filmConnection: Movie[];
 }

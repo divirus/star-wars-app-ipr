@@ -3,11 +3,11 @@ import { Starship } from 'src/app/models/starship.model';
 import {MainService} from '../../core/services/main.service';
 
 @Component({
-  selector: 'app-starship',
-  templateUrl: './starship.component.html',
-  styleUrls: ['./starship.component.scss']
+  selector: 'app-starships',
+  templateUrl: './starships.component.html',
+  styleUrls: ['./starships.component.scss']
 })
-export class StarshipComponent implements OnInit {
+export class StarshipsComponent implements OnInit {
   private gridApi: any;
   private gridColumnApi: any;
 

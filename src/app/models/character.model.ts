@@ -1,4 +1,4 @@
-import {Film} from './film.model';
+import {Movie} from './movie.model';
 import {Starship} from './starship.model';
 import {Vehicle} from './vehicle.model';
 import {Planet} from './planet.model';
@@ -16,7 +16,7 @@ export interface Character {
   skinColor: string;
   homeWorld: Planet;
   species: Species[];
-  filmConnection: Film[];
+  filmConnection: Movie[];
   starshipConnection: Starship[];
   vehicleConnection: Vehicle[];
 }
