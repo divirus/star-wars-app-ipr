@@ -1,20 +1,20 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {Film} from 'src/app/models/film.model';
+import {Movie} from 'src/app/models/movie.model';
 import {MainService} from '../../core/services/main.service';
 
 @Component({
-  selector: 'app-film',
-  templateUrl: './film.component.html',
-  styleUrls: ['./film.component.scss']
+  selector: 'app-movies',
+  templateUrl: './movies.component.html',
+  styleUrls: ['./movies.component.scss']
 })
-export class FilmComponent implements OnInit {
+export class MoviesComponent implements OnInit {
   private gridApi: any;
   private gridColumnApi: any;
 
   perPageLimit = 10;
   detailModalVisible = false;
-  movies: Film[] = [];
-  selectedMovie: Film | undefined;
+  movies: Movie[] = [];
+  selectedMovie: Movie | undefined;
   moviesColumns = [
     {field: 'title', sortable: true, filter: true},
     {field: 'episodeID', width: 120},
