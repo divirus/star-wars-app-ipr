@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Character } from 'src/app/models/character.model';
 import { MainService } from '../../core/services/main.service';
+import {Store} from '@ngrx/store';
+import {setSettings} from '../../store';
+import {tableSettingsSelector} from '../../store/selectors';
+import {TableSettings} from '../../store/reducers/table.reducers';
 
 @Component({
   selector: 'app-characters',
@@ -10,6 +14,8 @@ import { MainService } from '../../core/services/main.service';
 export class CharactersComponent implements OnInit {
   private gridApi: any;
   private gridColumnApi: any;
+
+  tableSettings$ = this.store.select(tableSettingsSelector);
 
   perPageLimit = 10;
   detailModalVisible = false;
@@ -26,7 +32,7 @@ export class CharactersComponent implements OnInit {
     {field: 'skinColor'},
   ];
 
-  constructor(private mainService: MainService) {
+  constructor(private mainService: MainService, private store: Store) {
   }
 
   ngOnInit(): void {
@@ -60,5 +66,21 @@ export class CharactersComponent implements OnInit {
   changePerPageLimit(event: any): void {
     this.perPageLimit = event.target.valueAsNumber;
     this.gridApi.paginationSetPageSize(this.perPageLimit);
+  }
+
+  onSettingsChange(event: any): void {
+    const tableSettings =
+      {
+        tableSettings: [{
+          table: 'character',
+          settings: {
+            limit: this.perPageLimit,
+            page: this.gridApi.paginationGetCurrentPage(),
+            filter: this.gridApi.getFilterModel(),
+            columns: this.gridColumnApi.getColumnState(),
+          }
+        }]
+      };
+    this.store.dispatch(setSettings(tableSettings));
   }
 }

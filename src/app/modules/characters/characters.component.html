@@ -14,6 +14,9 @@
     [paginationPageSize]="perPageLimit"
     (cellClicked)="onSelectionChanged($event)"
     (gridReady)="onGridReady($event)"
+    (sortChanged)="onSettingsChange($event)"
+    (filterChanged)="onSettingsChange($event)"
+    (paginationChanged)="onSettingsChange($event)"
   >
   </ag-grid-angular>
   <div class="per-page-input_container">

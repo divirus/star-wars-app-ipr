@@ -1,1 +1,1 @@
-export * from './router.actions';
+export * from './table.actions';

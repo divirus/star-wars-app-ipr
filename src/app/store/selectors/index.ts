@@ -1,1 +1,1 @@
-export * from './router.selector';
+export * from './table.selector';
