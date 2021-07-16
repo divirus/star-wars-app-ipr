@@ -1,6 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import { Planet } from 'src/app/models/planet.model';
 import {MainService} from '../../core/services/main.service';
+import {select, Store} from '@ngrx/store';
+import {setSettings} from '../../store';
+import {tableSettingsSelector} from '../../store/selectors';
+import {filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-planets',
@@ -26,11 +30,20 @@ export class PlanetsComponent implements OnInit {
     { field: 'surfaceWater', sortable: true, filter: true },
   ];
 
-  constructor(private mainService: MainService) {
+  constructor(private mainService: MainService, private store: Store) {
   }
 
   ngOnInit(): void {
     this.getPlanets();
+
+    this.store
+      .pipe(
+        select(tableSettingsSelector),
+        filter(val => val !== undefined)
+      )
+      .subscribe((tableSettings) => {
+        console.log(tableSettings?.planets);
+      });
   }
 
   getPlanets(): void {
@@ -60,5 +73,20 @@ export class PlanetsComponent implements OnInit {
   changePerPageLimit(event: any): void {
     this.perPageLimit = event.target.valueAsNumber;
     this.gridApi.paginationSetPageSize(this.perPageLimit);
+  }
+
+  onSettingsChange(): void {
+    const tableSettings =
+      {
+        tableSettings: {
+          planets: {
+            limit: this.perPageLimit,
+            page: this?.gridApi?.paginationGetCurrentPage(),
+            filter: this?.gridApi?.getFilterModel(),
+            columns: this?.gridColumnApi?.getColumnState(),
+          }
+        }
+      };
+    this.store.dispatch(setSettings(tableSettings));
   }
 }

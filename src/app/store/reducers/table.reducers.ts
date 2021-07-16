@@ -1,4 +1,4 @@
-import {createFeatureSelector, createReducer, createSelector, on} from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 import { clearSettings, setSettings } from '../actions';
 
 interface Settings {
@@ -9,26 +9,25 @@ interface Settings {
 }
 
 export interface TableSettings {
-  table: string;
-  settings: Settings;
+  [table: string]: Settings;
 }
 
 export interface TableState {
-  tableSettings: TableSettings[];
+  tableSettings: TableSettings;
 }
 
 export const initialState: TableState = {
-  tableSettings: [],
+  tableSettings: {},
 };
 
 export const tableReducer = createReducer(
   initialState,
-  on(setSettings, (state, tableSettings) => ({
+  on(setSettings, (state, newState) => ({
     ...state,
-    tableSettings: tableSettings.tableSettings
+    tableSettings: { ...state.tableSettings, ...newState.tableSettings }
   })),
   on(clearSettings, state => ({
     ...state,
-    tableSettings: []
+    tableSettings: {}
   }))
 );

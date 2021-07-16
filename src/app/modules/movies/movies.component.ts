@@ -1,6 +1,10 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {Movie} from 'src/app/models/movie.model';
 import {MainService} from '../../core/services/main.service';
+import {setSettings} from '../../store';
+import {select, Store} from '@ngrx/store';
+import {tableSettingsSelector} from '../../store/selectors';
+import {filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-movies',
@@ -24,11 +28,20 @@ export class MoviesComponent implements OnInit {
     {field: 'releaseDate', sortable: true, filter: true, width: 'auto'},
   ];
 
-  constructor(private mainService: MainService, private cd: ChangeDetectorRef) {
+  constructor(private mainService: MainService, private cd: ChangeDetectorRef, private store: Store) {
   }
 
   ngOnInit(): void {
     this.getMovies();
+
+    this.store
+      .pipe(
+        select(tableSettingsSelector),
+        filter(val => val !== undefined)
+      )
+      .subscribe((tableSettings) => {
+        console.log(tableSettings?.movies);
+      });
   }
 
   getMovies(): void {
@@ -58,5 +71,20 @@ export class MoviesComponent implements OnInit {
   changePerPageLimit(event: any): void {
     this.perPageLimit = event.target.valueAsNumber;
     this.gridApi.paginationSetPageSize(this.perPageLimit);
+  }
+
+  onSettingsChange(): void {
+    const tableSettings =
+      {
+        tableSettings: {
+          movies: {
+            limit: this.perPageLimit,
+            page: this?.gridApi?.paginationGetCurrentPage(),
+            filter: this?.gridApi?.getFilterModel(),
+            columns: this?.gridColumnApi?.getColumnState(),
+          }
+        }
+      };
+    this.store.dispatch(setSettings(tableSettings));
   }
 }

@@ -6,5 +6,5 @@ export enum TableActionTypes {
   ClearSettings = '[Table] Clear Settings',
 }
 
-export const setSettings = createAction(TableActionTypes.SetSettings, props<{ tableSettings: TableSettings[] }>());
+export const setSettings = createAction(TableActionTypes.SetSettings, props<{ tableSettings: TableSettings }>());
 export const clearSettings = createAction(TableActionTypes.ClearSettings);

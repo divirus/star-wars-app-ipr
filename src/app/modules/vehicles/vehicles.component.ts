@@ -1,6 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {Vehicle} from 'src/app/models/vehicle.model';
 import {MainService} from '../../core/services/main.service';
+import {select, Store} from '@ngrx/store';
+import {setSettings} from '../../store';
+import {tableSettingsSelector} from '../../store/selectors';
+import {filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-vehicles',
@@ -29,11 +33,20 @@ export class VehiclesComponent implements OnInit {
     {field: 'consumables'},
   ];
 
-  constructor(private mainService: MainService) {
+  constructor(private mainService: MainService, private store: Store) {
   }
 
   ngOnInit(): void {
     this.getVehicles();
+
+    this.store
+      .pipe(
+        select(tableSettingsSelector),
+        filter(val => val !== undefined)
+      )
+      .subscribe((tableSettings) => {
+        console.log(tableSettings?.vehicles);
+      });
   }
 
   getVehicles(): void {
@@ -63,5 +76,20 @@ export class VehiclesComponent implements OnInit {
   changePerPageLimit(event: any): void {
     this.perPageLimit = event.target.valueAsNumber;
     this.gridApi.paginationSetPageSize(this.perPageLimit);
+  }
+
+  onSettingsChange(): void {
+    const tableSettings =
+      {
+        tableSettings: {
+          vehicles: {
+            limit: this.perPageLimit,
+            page: this?.gridApi?.paginationGetCurrentPage(),
+            filter: this?.gridApi?.getFilterModel(),
+            columns: this?.gridColumnApi?.getColumnState(),
+          }
+        }
+      };
+    this.store.dispatch(setSettings(tableSettings));
   }
 }

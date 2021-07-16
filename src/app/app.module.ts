@@ -44,7 +44,6 @@ export const metaReducers: MetaReducer<any>[] = [];
   imports: [
     BrowserModule,
     GraphQLModule,
-    StoreModule.forRoot(reducers, { metaReducers }),
     RouterModule.forRoot(appRoutes),
     ReactiveFormsModule,
     SharedModule,

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Character } from 'src/app/models/character.model';
 import { MainService } from '../../core/services/main.service';
-import {Store} from '@ngrx/store';
+import {select, Store} from '@ngrx/store';
 import {setSettings} from '../../store';
 import {tableSettingsSelector} from '../../store/selectors';
-import {TableSettings} from '../../store/reducers/table.reducers';
+import {filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-characters',
@@ -14,8 +14,6 @@ import {TableSettings} from '../../store/reducers/table.reducers';
 export class CharactersComponent implements OnInit {
   private gridApi: any;
   private gridColumnApi: any;
-
-  tableSettings$ = this.store.select(tableSettingsSelector);
 
   perPageLimit = 10;
   detailModalVisible = false;
@@ -37,6 +35,15 @@ export class CharactersComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCharacters();
+
+    this.store
+      .pipe(
+        select(tableSettingsSelector),
+        filter(val => val !== undefined)
+      )
+      .subscribe((tableSettings) => {
+        console.log(tableSettings?.characters);
+      });
   }
 
   getCharacters(): void {
@@ -68,18 +75,17 @@ export class CharactersComponent implements OnInit {
     this.gridApi.paginationSetPageSize(this.perPageLimit);
   }
 
-  onSettingsChange(event: any): void {
+  onSettingsChange(): void {
     const tableSettings =
       {
-        tableSettings: [{
-          table: 'character',
-          settings: {
+        tableSettings: {
+          characters: {
             limit: this.perPageLimit,
-            page: this.gridApi.paginationGetCurrentPage(),
-            filter: this.gridApi.getFilterModel(),
-            columns: this.gridColumnApi.getColumnState(),
+            page: this?.gridApi?.paginationGetCurrentPage(),
+            filter: this?.gridApi?.getFilterModel(),
+            columns: this?.gridColumnApi?.getColumnState(),
           }
-        }]
+        }
       };
     this.store.dispatch(setSettings(tableSettings));
   }
