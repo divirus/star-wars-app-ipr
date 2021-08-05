@@ -1,21 +1,23 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Vehicle} from 'src/app/models/vehicle.model';
 import {MainService} from '../../core/services/main.service';
 import {select, Store} from '@ngrx/store';
-import {setSettings} from '../../store';
-import {tableSettingsSelector} from '../../store/selectors';
-import {filter} from 'rxjs/operators';
+import {filter, take} from 'rxjs/operators';
+import {setSettings, setData} from './store';
+import {tableSettingsSelector, tableDataSelector} from './store/selectors';
+import {Settings, VehiclesTableData} from './store/reducers/table.reducers';
 
 @Component({
   selector: 'app-vehicles',
   templateUrl: './vehicles.component.html',
   styleUrls: ['./vehicles.component.scss']
 })
-export class VehiclesComponent implements OnInit {
+export class VehiclesComponent implements OnInit, OnDestroy {
   private gridApi: any;
   private gridColumnApi: any;
 
   perPageLimit = 10;
+  savedTableSettings: Settings = {limit: this.perPageLimit, page: 0, filter: '', columns: []};
   detailModalVisible = false;
   vehicles: Vehicle[] = [];
   selectedVehicle: Vehicle | undefined;
@@ -37,27 +39,66 @@ export class VehiclesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getVehicles();
+    this.store
+      .pipe(
+        select(tableDataSelector),
+        take(1)
+      )
+      .subscribe((tableData: VehiclesTableData) => {
+        if (!tableData.vehicles) {
+          this.getVehicles();
+        } else {
+          this.vehicles = tableData.vehicles;
+        }
+      });
 
     this.store
       .pipe(
         select(tableSettingsSelector),
-        filter(val => val !== undefined)
+        filter(val => val !== undefined),
+        take(1)
       )
       .subscribe((tableSettings) => {
-        console.log(tableSettings?.vehicles);
+        if (tableSettings?.vehicles) {
+          this.savedTableSettings = tableSettings?.vehicles;
+        }
       });
+  }
+
+  ngOnDestroy(): void {
+    const tableSettings =
+      {
+        tableSettings: {
+          vehicles: {
+            limit: this.perPageLimit,
+            page: this?.gridApi?.paginationGetCurrentPage(),
+            filter: this?.gridApi?.getFilterModel(),
+            columns: this?.gridColumnApi?.getColumnState(),
+          }
+        }
+      };
+    this.store.dispatch(setSettings(tableSettings));
   }
 
   getVehicles(): void {
     this.mainService.getVehicles().subscribe((data) => {
       this.vehicles = data?.data?.allVehicles?.vehicles;
+      const vehiclesTableData = {
+        tableData: {
+          vehicles: this.vehicles
+        }
+      };
+      this.store.dispatch(setData(vehiclesTableData));
     });
   }
 
   onGridReady(params: any): void {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
+
+    this.perPageLimit = this.savedTableSettings.limit;
+    this.gridApi.paginationSetPageSize(this.perPageLimit);
+    this.gridApi.paginationGoToPage(this.savedTableSettings.page);
   }
 
   onSelectionChanged(row: any): void {
@@ -76,20 +117,5 @@ export class VehiclesComponent implements OnInit {
   changePerPageLimit(event: any): void {
     this.perPageLimit = event.target.valueAsNumber;
     this.gridApi.paginationSetPageSize(this.perPageLimit);
-  }
-
-  onSettingsChange(): void {
-    const tableSettings =
-      {
-        tableSettings: {
-          vehicles: {
-            limit: this.perPageLimit,
-            page: this?.gridApi?.paginationGetCurrentPage(),
-            filter: this?.gridApi?.getFilterModel(),
-            columns: this?.gridColumnApi?.getColumnState(),
-          }
-        }
-      };
-    this.store.dispatch(setSettings(tableSettings));
   }
 }

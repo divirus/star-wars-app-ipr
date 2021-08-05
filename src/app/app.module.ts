@@ -14,12 +14,6 @@ import {PlanetsModule} from './modules/planets/planets.module';
 import {SpeciesModule} from './modules/species/species.module';
 import {StarshipsModule} from './modules/starships/starships.module';
 import {VehiclesModule} from './modules/vehicles/vehicles.module';
-import {MetaReducer, StoreModule} from '@ngrx/store';
-import { reducers } from './store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environment } from '../environments/environment';
-import { EffectsModule } from '@ngrx/effects';
-import { AppEffects } from './app.effects';
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
@@ -31,8 +25,6 @@ const appRoutes: Routes = [
   { path: 'vehicles', loadChildren: () => import('./modules/vehicles/vehicles.module').then(m => m.VehiclesModule) },
   {path: '**', component: NotFoundComponent},
 ];
-
-export const metaReducers: MetaReducer<any>[] = [];
 
 @NgModule({
   declarations: [
@@ -53,11 +45,6 @@ export const metaReducers: MetaReducer<any>[] = [];
     SpeciesModule,
     StarshipsModule,
     VehiclesModule,
-    StoreModule.forRoot(reducers, {
-      metaReducers
-    }),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    EffectsModule.forRoot([AppEffects])
   ],
   providers: [],
   bootstrap: [AppComponent]

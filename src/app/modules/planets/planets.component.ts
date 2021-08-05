@@ -1,21 +1,23 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { Planet } from 'src/app/models/planet.model';
 import {MainService} from '../../core/services/main.service';
 import {select, Store} from '@ngrx/store';
-import {setSettings} from '../../store';
-import {tableSettingsSelector} from '../../store/selectors';
-import {filter} from 'rxjs/operators';
+import {filter, take} from 'rxjs/operators';
+import {setSettings, setData} from './store';
+import {tableSettingsSelector, tableDataSelector} from './store/selectors';
+import {PlanetsTableData, Settings} from './store/reducers/table.reducers';
 
 @Component({
   selector: 'app-planets',
   templateUrl: './planets.component.html',
   styleUrls: ['./planets.component.scss']
 })
-export class PlanetsComponent implements OnInit {
+export class PlanetsComponent implements OnInit, OnDestroy {
   private gridApi: any;
   private gridColumnApi: any;
 
   perPageLimit = 10;
+  savedTableSettings: Settings = {limit: this.perPageLimit, page: 0, filter: '', columns: []};
   detailModalVisible = false;
   planets: Planet[] = [];
   selectedPlanet: Planet | undefined;
@@ -34,27 +36,66 @@ export class PlanetsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getPlanets();
+    this.store
+      .pipe(
+        select(tableDataSelector),
+        take(1)
+      )
+      .subscribe((tableData: PlanetsTableData) => {
+        if (!tableData.planets) {
+          this.getPlanets();
+        } else {
+          this.planets = tableData.planets;
+        }
+      });
 
     this.store
       .pipe(
         select(tableSettingsSelector),
-        filter(val => val !== undefined)
+        filter(val => val !== undefined),
+        take(1)
       )
       .subscribe((tableSettings) => {
-        console.log(tableSettings?.planets);
+        if (tableSettings?.planets) {
+          this.savedTableSettings = tableSettings?.planets;
+        }
       });
+  }
+
+  ngOnDestroy(): void {
+    const tableSettings =
+      {
+        tableSettings: {
+          planets: {
+            limit: this.perPageLimit,
+            page: this?.gridApi?.paginationGetCurrentPage(),
+            filter: this?.gridApi?.getFilterModel(),
+            columns: this?.gridColumnApi?.getColumnState(),
+          }
+        }
+      };
+    this.store.dispatch(setSettings(tableSettings));
   }
 
   getPlanets(): void {
     this.mainService.getPlanets().subscribe((data) => {
       this.planets = data?.data?.allPlanets?.planets;
+      const planetsTableData = {
+        tableData: {
+          planets: this.planets
+        }
+      };
+      this.store.dispatch(setData(planetsTableData));
     });
   }
 
   onGridReady(params: any): void {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
+
+    this.perPageLimit = this.savedTableSettings.limit;
+    this.gridApi.paginationSetPageSize(this.perPageLimit);
+    this.gridApi.paginationGoToPage(this.savedTableSettings.page);
   }
 
   onSelectionChanged(row: any): void {
@@ -75,18 +116,27 @@ export class PlanetsComponent implements OnInit {
     this.gridApi.paginationSetPageSize(this.perPageLimit);
   }
 
-  onSettingsChange(): void {
-    const tableSettings =
-      {
-        tableSettings: {
-          planets: {
-            limit: this.perPageLimit,
-            page: this?.gridApi?.paginationGetCurrentPage(),
-            filter: this?.gridApi?.getFilterModel(),
-            columns: this?.gridColumnApi?.getColumnState(),
+  onSettingsChange(event: any): void {
+    let needToUpdate = false;
+
+    switch (event.type) {
+      case 'paginationChanged':
+        needToUpdate = event.newPage;
+    }
+
+    if (needToUpdate) {
+      const tableSettings =
+        {
+          tableSettings: {
+            planets: {
+              limit: this.perPageLimit,
+              page: this?.gridApi?.paginationGetCurrentPage(),
+              filter: this?.gridApi?.getFilterModel(),
+              columns: this?.gridColumnApi?.getColumnState(),
+            }
           }
-        }
-      };
-    this.store.dispatch(setSettings(tableSettings));
+        };
+      this.store.dispatch(setSettings(tableSettings));
+    }
   }
 }

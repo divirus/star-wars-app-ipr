@@ -4,7 +4,14 @@ import { Routes, RouterModule } from '@angular/router';
 import { CharactersComponent } from './characters.component';
 import {SharedModule} from '../../shared/shared.module';
 import {AgGridModule} from 'ag-grid-angular';
+import {MetaReducer, StoreModule} from '@ngrx/store';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {environment} from '../../../environments/environment';
+import {EffectsModule} from '@ngrx/effects';
+import {AppEffects} from '../../app.effects';
+import {reducers} from './store';
 
+const metaReducers: MetaReducer<any>[] = [];
 const routes: Routes = [
   { path: 'characters', component: CharactersComponent }
 ];
@@ -16,6 +23,11 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     SharedModule,
     AgGridModule.withComponents([]),
+    StoreModule.forRoot(reducers, {
+      metaReducers
+    }),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    EffectsModule.forRoot([AppEffects])
   ]
 })
 export class CharactersModule { }
