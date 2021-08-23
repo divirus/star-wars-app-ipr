@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {Vehicle} from 'src/app/models/vehicle.model';
 import {MainService} from '../../core/services/main.service';
 import {select, Store} from '@ngrx/store';
@@ -10,7 +10,8 @@ import {Settings, VehiclesTableData} from './store/reducers/table.reducers';
 @Component({
   selector: 'app-vehicles',
   templateUrl: './vehicles.component.html',
-  styleUrls: ['./vehicles.component.scss']
+  styleUrls: ['./vehicles.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VehiclesComponent implements OnInit, OnDestroy {
   private gridApi: any;

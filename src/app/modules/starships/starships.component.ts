@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import { Starship } from 'src/app/models/starship.model';
 import {MainService} from '../../core/services/main.service';
 import {select, Store} from '@ngrx/store';
@@ -10,7 +10,8 @@ import {Settings, StarshipsTableData} from './store/reducers/table.reducers';
 @Component({
   selector: 'app-starships',
   templateUrl: './starships.component.html',
-  styleUrls: ['./starships.component.scss']
+  styleUrls: ['./starships.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StarshipsComponent implements OnInit, OnDestroy {
   private gridApi: any;

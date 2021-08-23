@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {Movie} from 'src/app/models/movie.model';
 import {MainService} from '../../core/services/main.service';
 import {select, Store} from '@ngrx/store';
@@ -10,7 +10,8 @@ import {MoviesTableData, Settings} from './store/reducers/table.reducers';
 @Component({
   selector: 'app-movies',
   templateUrl: './movies.component.html',
-  styleUrls: ['./movies.component.scss']
+  styleUrls: ['./movies.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MoviesComponent implements OnInit, OnDestroy {
   private gridApi: any;

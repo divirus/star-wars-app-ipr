@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import { Species } from 'src/app/models/species.model';
 import {MainService} from '../../core/services/main.service';
 import {select, Store} from '@ngrx/store';
@@ -10,7 +10,8 @@ import {Settings, SpeciesTableData} from './store/reducers/table.reducers';
 @Component({
   selector: 'app-species',
   templateUrl: './species.component.html',
-  styleUrls: ['./species.component.scss']
+  styleUrls: ['./species.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesComponent implements OnInit, OnDestroy {
   private gridApi: any;

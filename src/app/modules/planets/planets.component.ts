@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import { Planet } from 'src/app/models/planet.model';
 import {MainService} from '../../core/services/main.service';
 import {select, Store} from '@ngrx/store';
@@ -10,7 +10,8 @@ import {PlanetsTableData, Settings} from './store/reducers/table.reducers';
 @Component({
   selector: 'app-planets',
   templateUrl: './planets.component.html',
-  styleUrls: ['./planets.component.scss']
+  styleUrls: ['./planets.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlanetsComponent implements OnInit, OnDestroy {
   private gridApi: any;

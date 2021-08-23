@@ -1,0 +1,18 @@
+:host {
+  display: flex;
+  background: #fff;
+  border-width: 1px;
+  border-style: inset;
+  border-color: #3b3b3b;
+
+  .relatable-element {
+    display: inline-flex;
+    font-size: 13px;
+    background: #a9a9a9;
+    border: #000;
+    border-radius: 4px;
+    margin: 1px 2px;
+    padding: 4px;
+    cursor: pointer;
+  }
+}

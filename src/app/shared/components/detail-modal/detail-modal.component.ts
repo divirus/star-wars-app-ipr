@@ -26,7 +26,42 @@ export class DetailModalComponent implements OnInit {
           formState = null;
 
           formControl[data] = new FormControl(formState);
-          formControl[data].setValue(this.modalData[data]);
+
+          switch (data) {
+            case 'homeworld':
+              formControl[data].setValue(this.modalData[data]?.name || []);
+              break;
+            case 'filmConnection':
+              formControl[data].setValue(this.modalData[data]?.films || []);
+              break;
+            case 'starshipConnection':
+              formControl[data].setValue(this.modalData[data]?.starships || []);
+              break;
+            case 'vehicleConnection':
+              formControl[data].setValue(this.modalData[data]?.vehicles || []);
+              break;
+            case 'planetConnection':
+              formControl[data].setValue(this.modalData[data]?.planets || []);
+              break;
+            case 'pilotConnection':
+              formControl[data].setValue(this.modalData[data]?.pilots || []);
+              break;
+            case 'speciesConnection':
+              formControl[data].setValue(this.modalData[data]?.species || []);
+              break;
+            case 'characterConnection':
+              formControl[data].setValue(this.modalData[data]?.characters || []);
+              break;
+            case 'residentConnection':
+              formControl[data].setValue(this.modalData[data]?.residents || []);
+              break;
+            case 'personConnection':
+              formControl[data].setValue(this.modalData[data]?.people || []);
+              break;
+            default:
+              formControl[data].setValue(this.modalData[data]);
+              break;
+          }
         });
     }
 

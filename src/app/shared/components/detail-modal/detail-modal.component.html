@@ -6,9 +6,33 @@
 </div>
 <div class="detail-modal__content">
     <ng-container *ngFor="let data of modalData | keyvalue">
-      <div class="form-item">
-        <label>{{ data.key }}</label>
-        <input class="form-item__input" [formControl]="formGroup.get(data.key)" />
+      <div [ngSwitch]="true">
+        <div *ngSwitchCase="formGroup.get(data.key).value.length === 0">
+          <div></div>
+        </div>
+        <div *ngSwitchCase="(data.key === 'filmConnection' ||
+        data.key === 'starshipConnection' ||
+        data.key === 'vehicleConnection' ||
+        data.key === 'planetConnection' ||
+        data.key === 'pilotConnection' ||
+        data.key === 'speciesConnection' ||
+        data.key === 'characterConnection' ||
+        data.key === 'personConnection' ||
+        data.key === 'residentConnection') &&
+        formGroup.get(data.key).value.length > 0">
+          <div class="form-item">
+            <label>{{ data.key }}</label>
+            <app-relatable-elements
+              [elements]="formGroup.get(data.key).value"
+            ></app-relatable-elements>
+          </div>
+        </div>
+        <div *ngSwitchDefault>
+          <div class="form-item">
+            <label>{{ data.key}}</label>
+            <input class="form-item__input" [formControl]="formGroup.get(data.key)" />
+          </div>
+        </div>
       </div>
     </ng-container>
 </div>

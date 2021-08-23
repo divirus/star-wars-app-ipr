@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import { Character } from 'src/app/models/character.model';
 import { MainService } from '../../core/services/main.service';
 import {select, Store} from '@ngrx/store';
@@ -10,7 +10,8 @@ import {CharactersTableData, Settings, TableSettings} from './store/reducers/tab
 @Component({
   selector: 'app-characters',
   templateUrl: './characters.component.html',
-  styleUrls: ['./characters.component.scss']
+  styleUrls: ['./characters.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CharactersComponent implements OnInit, OnDestroy {
   private gridApi: any;
