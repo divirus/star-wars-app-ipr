@@ -24,6 +24,7 @@
             <label>{{ data.key }}</label>
             <app-relatable-elements
               [elements]="formGroup.get(data.key).value"
+              [elementType]="getElementType(data.key)"
             ></app-relatable-elements>
           </div>
         </div>

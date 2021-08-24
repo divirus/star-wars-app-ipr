@@ -14,7 +14,7 @@ export class GraphQLModule {
     apollo: Apollo,
     httpLink: HttpLink,
   ) {
-    const http = httpLink.create({ uri: 'http://localhost:60751' });
+    const http = httpLink.create({ uri: 'http://localhost:59678' });
     const cache = new InMemoryCache({ addTypename: false });
 
     apollo.create({
