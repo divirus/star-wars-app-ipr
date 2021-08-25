@@ -25,6 +25,8 @@
             <app-relatable-elements
               [elements]="formGroup.get(data.key).value"
               [elementType]="getElementType(data.key)"
+              [(elementsData)]="modalData"
+              (makeModalData)="makeModalData()"
             ></app-relatable-elements>
           </div>
         </div>

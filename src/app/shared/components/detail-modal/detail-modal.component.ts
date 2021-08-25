@@ -1,10 +1,11 @@
-import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectionStrategy} from '@angular/core';
 import {FormBuilder, FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-detail-modal',
   templateUrl: './detail-modal.component.html',
-  styleUrls: ['./detail-modal.component.scss']
+  styleUrls: ['./detail-modal.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DetailModalComponent implements OnInit {
   @Input() modalData: any = {};
@@ -17,6 +18,10 @@ export class DetailModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.makeModalData();
+  }
+
+  makeModalData(): void {
     const formControl: any = {};
 
     if (this.modalData) {
