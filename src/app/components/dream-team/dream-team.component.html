@@ -4,51 +4,35 @@
   </div>
   <div class="dream-team-container_form form">
     <div class="rows first-row">
-      <div class="form-item">
-        <label>Лидер команды</label>
-        <input />
-      </div>
-      <div class="form-item">
-        <label>Будущий предатель</label>
-        <input />
-      </div>
-      <div class="form-item">
-        <label>Эксперт по оружию</label>
-        <input />
-      </div>
-      <div class="form-item">
-        <label>Гений</label>
-        <input />
-      </div>
-      <div class="form-item">
-        <label>Врач</label>
-        <input />
-      </div>
-      <div class="form-item">
-        <label>Мастер боевых искусств</label>
-        <input />
-      </div>
-      <div class="form-item">
-        <label>Талисман</label>
-        <input />
-      </div>
-      <div class="form-item">
-        <label>Парень, который погибнет первым</label>
-        <input />
+      <div class="form-item" [formGroup]="formGroup" *ngFor="let character of dreamTeamSquad">
+        <label>{{character.name}}</label>
+        <select id="{{character.id}}" (change)="onChangeCharacter($event)" formControlName="charactersSelect">
+          <option value="" disabled>Выбери персонажа</option>
+          <option *ngFor="let value of charactersSelect" [hidden]="formattedCharactersArray().includes(value)" [value]="value">{{ value }}</option>
+        </select>
       </div>
     </div>
     <div class="rows second-row">
-      <div class="form-item">
+      <div class="form-item" [formGroup]="formGroup">
         <label>Космический корабль</label>
-        <input />
+        <select formControlName="starshipsSelect">
+          <option value="" disabled>Выбери корабль</option>
+          <option *ngFor="let value of starshipsSelect" [value]="value">{{ value }}</option>
+        </select>
       </div>
-      <div class="form-item">
+      <div class="form-item" [formGroup]="formGroup">
         <label>Наземный транспорт</label>
-        <input />
+        <select formControlName="vehiclesSelect">
+          <option value="" disabled>Выбери транспорт</option>
+          <option *ngFor="let value of vehiclesSelect" [value]="value">{{ value }}</option>
+        </select>
       </div>
-      <div class="form-item">
+      <div class="form-item" [formGroup]="formGroup">
         <label>База находится на планете</label>
-        <input />
+        <select formControlName="planetsSelect">
+          <option value="" disabled>Выбери планету</option>
+          <option *ngFor="let value of planetsSelect" [value]="value">{{ value }}</option>
+        </select>
       </div>
     </div>
   </div>
